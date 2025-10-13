@@ -1,0 +1,18 @@
+workflows:
+  android-workflow:
+    name: Android Build
+    max_build_duration: 60
+    environment:
+      jdk: openjdk17
+      gradle: 8.2
+    scripts:
+      - name: Install dependencies
+        script: |
+          echo "Installing Android dependencies..."
+          # pip install -r backend/requirements.txt  # если нужен backend
+      - name: Build APK
+        script: |
+          cd android_app
+          ./gradlew assembleRelease
+    artifacts:
+      - android_app/app/build/outputs/apk/release/app-release.apk
