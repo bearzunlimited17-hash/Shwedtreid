@@ -3,11 +3,10 @@ workflows:
     name: Android Workflow
     max_build_duration: 60
     environment:
-      android:
-        compileSdk: 33
-        buildTools: "33.0.0"
-        minSdk: 21
-        targetSdk: 33
+      flutter: stable
+      android: true
+      xcode: false
+      jdk: openjdk11
     scripts:
       - name: Install Android dependencies
         script: |
