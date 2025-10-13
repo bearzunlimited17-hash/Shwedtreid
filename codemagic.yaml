@@ -2,24 +2,14 @@ workflows:
   android-workflow:
     name: Android Workflow
     max_build_duration: 60
-    environment:
-      vars:
-        # Здесь можно добавить переменные окружения, если нужно
-        # Например, API_KEY: "your_api_key_here"
     scripts:
-      - name: Install Android dependencies
+      - name: Build Android APK
         script: |
           cd android_app
-          ./gradlew clean
-      - name: Build APK
-        script: |
-          cd android_app
-          ./gradlew assembleRelease
+          ./gradlew clean assembleRelease
       - name: Install backend dependencies
         script: |
           pip install --upgrade pip
-          pip install -r backend/requirements.txt
-    tools:
-      jdk: openjdk11
+          pip install -r ../backend/requirements.txt
     artifacts:
       - android_app/app/build/outputs/apk/release/app-release.apk
