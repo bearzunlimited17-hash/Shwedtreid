@@ -1,18 +1,34 @@
 workflows:
   android-workflow:
-    name: Android Build
+    name: Android Workflow
     max_build_duration: 60
     environment:
-      jdk: openjdk17
-      gradle: 8.2
+      android:
+        compileSdk: 33
+        buildTools: "33.0.0"
+        minSdk: 21
+        targetSdk: 33
+      vars:
+        # Здесь можно добавить переменные окружения
+        # Например, API_KEY: "твой_ключ"
     scripts:
-      - name: Install dependencies
+      - name: Install Android dependencies
         script: |
-          echo "Installing Android dependencies..."
-          # pip install -r backend/requirements.txt  # если нужен backend
+          cd android_app
+          ./gradlew clean
       - name: Build APK
         script: |
           cd android_app
           ./gradlew assembleRelease
+      - name: Install backend dependencies
+        script: |
+          pip install --upgrade pip
+          pip install -r backend/requirements.txt
     artifacts:
       - android_app/app/build/outputs/apk/release/app-release.apk
+    publishing:
+      email:
+        recipients:
+          - your_email@example.com
+        notify_on_build_success: true
+        notify_on_build_fail: true
