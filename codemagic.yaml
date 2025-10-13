@@ -3,10 +3,9 @@ workflows:
     name: Android Workflow
     max_build_duration: 60
     environment:
-      flutter: stable
-      android: true
-      xcode: false
-      jdk: openjdk11
+      vars:
+        # Здесь можно добавить переменные окружения, если нужно
+        # Например, API_KEY: "your_api_key_here"
     scripts:
       - name: Install Android dependencies
         script: |
@@ -20,5 +19,7 @@ workflows:
         script: |
           pip install --upgrade pip
           pip install -r backend/requirements.txt
+    tools:
+      jdk: openjdk11
     artifacts:
       - android_app/app/build/outputs/apk/release/app-release.apk
