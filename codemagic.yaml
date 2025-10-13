@@ -8,9 +8,6 @@ workflows:
         buildTools: "33.0.0"
         minSdk: 21
         targetSdk: 33
-      vars:
-        # Здесь можно добавить переменные окружения
-        # Например, API_KEY: "твой_ключ"
     scripts:
       - name: Install Android dependencies
         script: |
@@ -26,9 +23,3 @@ workflows:
           pip install -r backend/requirements.txt
     artifacts:
       - android_app/app/build/outputs/apk/release/app-release.apk
-    publishing:
-      email:
-        recipients:
-          - your_email@example.com
-        notify_on_build_success: true
-        notify_on_build_fail: true
