@@ -1,16 +1,22 @@
 workflows:
   android-workflow:
-    name: Android Workflow
-    instance_type: linux
-    max_build_duration: 60
+    name: Android workflow
+    instance_type: linux  # доступный на бесплатном плане
     environment:
-      vars: {}  # пустой словарь вместо 'none'
+      vars:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # убедись, что секрет задан в Codemagic
+      flutter: stable
+      android: true
+      jdk: openjdk-11  # поддерживаемая версия для сборки
     scripts:
-      - name: Install dependencies
+      - name: Get dependencies
         script: |
-          ./gradlew dependencies
-      - name: Build APK
-        script: |
+          cd android_app
+          ./gradlew clean
           ./gradlew assembleRelease
     artifacts:
-      - app/build/outputs/apk/release/app-release.apk
+      - android_app/app/build/outputs/apk/release/app-release.apk
+    publishing:
+      email:
+        recipients:
+          - your_email@example.com
