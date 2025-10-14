@@ -1,11 +1,12 @@
 workflows:
   android-workflow:
     name: Build Android APK
-    instance_type: linux  # только linux разрешен на бесплатном плане
+    instance_type: linux   # бесплатный тариф поддерживает только linux
     scripts:
       - name: Build APK
         script: |
           cd android_app
+          chmod +x gradlew
           ./gradlew assembleRelease
     artifacts:
       - android_app/app/build/outputs/**/*.apk
