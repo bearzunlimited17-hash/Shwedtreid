@@ -4,22 +4,13 @@ workflows:
     instance_type: linux
     max_build_duration: 60
     environment:
-      vars:
-        # Если нет переменных, просто не указываем vars
-        # Пример для секретного токена:
-        # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      vars: {}  # пустой словарь вместо 'none'
     scripts:
       - name: Install dependencies
         script: |
-          echo "Устанавливаем зависимости проекта"
-          ./gradlew dependencies || echo "Gradle wrapper не найден"
+          ./gradlew dependencies
       - name: Build APK
         script: |
-          echo "Сборка APK"
-          ./gradlew assembleRelease || exit 1
+          ./gradlew assembleRelease
     artifacts:
       - app/build/outputs/apk/release/app-release.apk
-    publishing:
-      email:
-        recipients:
-          - your-email@example.com
