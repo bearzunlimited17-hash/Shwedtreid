@@ -1,12 +1,12 @@
 workflows:
   android-workflow:
     name: Android Workflow
-    instance_type: linux_free  # Бесплатный план Codemagic
+    instance_type: linux  # обязательное значение из разрешенного списка
     max_build_duration: 60
 
     environment:
       vars:
-        GITHUB_TOKEN: $GITHUB_TOKEN  # строка
+        GITHUB_TOKEN: $GITHUB_TOKEN
       flutter: stable
 
     scripts:
