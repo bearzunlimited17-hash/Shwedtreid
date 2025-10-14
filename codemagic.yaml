@@ -1,18 +1,24 @@
 workflows:
   android-workflow:
-    name: Android workflow
-    instance_type: linux  # доступный на бесплатном плане
+    name: Android Workflow
+    instance_type: linux        # Бесплатный план Linux
     environment:
       vars:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # убедись, что секрет задан в Codemagic
-      flutter: stable
-      android: true
-      jdk: openjdk-11  # поддерживаемая версия для сборки
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Обязательно добавь секрет в Codemagic
+      flutter: stable          # Flutter SDK для сборки, если нужен
     scripts:
-      - name: Get dependencies
+      - name: Clean Project
         script: |
           cd android_app
-          ./gradlew clean
+          if [ -f ./gradlew ]; then
+            ./gradlew clean
+          else
+            echo "gradlew не найден, попробуй gradle wrapper"
+            gradle wrapper
+          fi
+      - name: Build APK
+        script: |
+          cd android_app
           ./gradlew assembleRelease
     artifacts:
       - android_app/app/build/outputs/apk/release/app-release.apk
