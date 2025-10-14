@@ -1,21 +1,21 @@
 workflows:
   android-workflow:
-    name: Android Free Plan
-    instance_type: linux      # Бесплатный план поддерживает только 'linux' или 'windows_x2'
+    name: Android workflow
+    instance_type: linux  # Бесплатный план поддерживает только linux
+    max_build_duration: 60
     environment:
       vars:
-        GITHUB_USERNAME: bearzunlimited17-hash
-        GITHUB_REPO: Shwedtreid
-        GITHUB_PAT: $GITHUB_PAT  # Настрой секрет на Codemagic
+        GITHUB_TOKEN: $GITHUB_PAT
     scripts:
-      - name: Checkout project
-        script: git checkout main
-      - name: Install dependencies
-        script: ./gradlew dependencies
-      - name: Assemble Release APK
-        script: ./gradlew assembleRelease
+      - name: Checkout repository
+        script: |
+          git clone https://bearzunlimited17-hash:$GITHUB_PAT@github.com/bearzunlimited17-hash/Shwedtreid.git .
+      - name: Build Android APK
+        script: |
+          echo "Starting Gradle build..."
+          ./gradlew assembleRelease || ./gradlew build
     artifacts:
-      - app/build/outputs/apk/release/app-release.apk
+      - app/build/outputs/**/*.apk
     publishing:
       email:
-        recipients: ["your-email@example.com"]  # сюда можно свой email
+        recipients: ["youremail@example.com"]
