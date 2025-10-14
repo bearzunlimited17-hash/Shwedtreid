@@ -6,12 +6,11 @@ workflows:
       vars:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       flutter: stable
-      xcode: null
     scripts:
       - name: Install dependencies
         script: |
           echo "Installing backend dependencies..."
-          # Пример: pip install -r requirements.txt, если нужно
+          # pip install -r requirements.txt, если нужно
       - name: Build Android APK
         script: |
           echo "Building APK..."
@@ -19,6 +18,3 @@ workflows:
           ./gradlew assembleRelease
     artifacts:
       - android_app/app/build/outputs/apk/release/app-release.apk
-    publishing:
-      email:
-        recipients: []
