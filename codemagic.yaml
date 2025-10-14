@@ -1,7 +1,7 @@
 workflows:
   android-workflow:
     name: Build Android APK
-    instance_type: linux   # бесплатный тариф поддерживает только linux
+    instance_type: linux
     scripts:
       - name: Build APK
         script: |
