@@ -1,19 +1,29 @@
 workflows:
   android-workflow:
     name: Android APK Build
-    instance_type: linux
-    max_build_duration: 60
+    instance_type: linux        # только доступные для бесплатного тарифа
+    max_build_duration: 60      # максимум минут для сборки
     environment:
-      java: openjdk-17
+      flutter: stable           # если нужен Flutter, иначе убрать
       vars:
-        # обычные переменные, например имя приложения
-        APP_NAME: "Shwedtreid"
+        # Не ставим GITHUB_TOKEN здесь — его нужно в Secrets UI
     scripts:
-      - name: Clean project
-        script: ./gradlew clean
-      - name: Get dependencies
-        script: ./gradlew build
-      - name: Build Release APK
+      - name: Install dependencies
+        script: |
+          echo "Установка зависимостей..."
+          # Например, для Android Gradle и Kotlin
+          sdkmanager "platforms;android-34" "build-tools;34.0.0"
+          ./gradlew dependencies
+      - name: Build APK
         script: ./gradlew assembleRelease
     artifacts:
-      - android_app/app/build/outputs/**/*.apk
+      - build/app/outputs/**/*.apk
+
+    publishing:
+      email:
+        # Лишние notify_on_build_fail / notify_on_build_success удаляем
+        recipients:
+          - you@example.com
+
+secrets:
+  GITHUB_TOKEN: Encrypted  # сюда добавляешь через UI Codemagic, не в vars
