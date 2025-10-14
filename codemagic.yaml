@@ -1,21 +1,18 @@
 workflows:
   android-workflow:
-    name: Android workflow
-    instance_type: linux  # Бесплатный план поддерживает только linux
-    max_build_duration: 60
+    name: Android Workflow
+    instance_type: linux
     environment:
       vars:
-        GITHUB_TOKEN: $GITHUB_PAT
+        GITHUB_USERNAME: bearzunlimited17-hash
+        GITHUB_REPO: Shwedtreid
+        GITHUB_PAT: $GITHUB_PAT  # Лучше хранить как secure environment variable
     scripts:
-      - name: Checkout repository
-        script: |
-          git clone https://bearzunlimited17-hash:$GITHUB_PAT@github.com/bearzunlimited17-hash/Shwedtreid.git .
-      - name: Build Android APK
-        script: |
-          echo "Starting Gradle build..."
-          ./gradlew assembleRelease || ./gradlew build
+      - echo "Сборка проекта..."
+      - cd android_app
+      - ./gradlew assembleRelease
     artifacts:
-      - app/build/outputs/**/*.apk
+      - android_app/app/build/outputs/**/*.apk
     publishing:
-      email:
-        recipients: ["youremail@example.com"]
+      github:
+        enabled: false  # если нужно пушить APK в релиз — можно добавить позже
