@@ -1,28 +1,20 @@
 workflows:
   android-workflow:
-    name: Build Android APK
+    name: Android APK Build
+    instance_type: linux        # Linux подходит для Android
     max_build_duration: 60
-    instance_type: standard
     environment:
       vars:
-        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-        GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
-      flutter: none
-      xcode: none
+        GITHUB_TOKEN:
+          value: ${{ secrets.GITHUB_TOKEN }}
+          is_secure: true
+      java: openjdk-17           # стабильная версия для Gradle
     scripts:
-      - name: Checkout code
-        script: |
-          git clone https://github.com/${GITHUB_USERNAME}/Shwedtreid.git .
-      - name: Build APK
-        script: |
-          cd android_app
-          chmod +x ./gradlew
-          ./gradlew assembleRelease
+      - name: Clean project
+        script: ./gradlew clean
+      - name: Get dependencies
+        script: ./gradlew build
+      - name: Build Release APK
+        script: ./gradlew assembleRelease
     artifacts:
-      - android_app/app/build/outputs/apk/release/app-release.apk
-    publishing:
-      email:
-        recipients:
-          - your_email@example.com
-        notify_on_build_fail: true
-        notify_on_build_success: true
+      - android_app/app/build/outputs/**/*.apk
