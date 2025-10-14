@@ -1,28 +1,24 @@
 workflows:
   android-workflow:
     name: Android Workflow
-    instance_type: linux        # Бесплатный план Linux
+    instance_type: linux
     environment:
       vars:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Обязательно добавь секрет в Codemagic
-      flutter: stable          # Flutter SDK для сборки, если нужен
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      flutter: stable
+      xcode: null
     scripts:
-      - name: Clean Project
+      - name: Install dependencies
         script: |
-          cd android_app
-          if [ -f ./gradlew ]; then
-            ./gradlew clean
-          else
-            echo "gradlew не найден, попробуй gradle wrapper"
-            gradle wrapper
-          fi
-      - name: Build APK
+          echo "Installing backend dependencies..."
+          # Пример: pip install -r requirements.txt, если нужно
+      - name: Build Android APK
         script: |
+          echo "Building APK..."
           cd android_app
           ./gradlew assembleRelease
     artifacts:
       - android_app/app/build/outputs/apk/release/app-release.apk
     publishing:
       email:
-        recipients:
-          - your_email@example.com
+        recipients: []
