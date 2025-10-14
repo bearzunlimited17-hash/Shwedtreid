@@ -1,17 +1,16 @@
 workflows:
   android-workflow:
-    name: Android Workflow
-    instance_type: linux   # Бесплатный план
-    environment:
-      vars:
-        GITHUB_USERNAME: bearzunlimited17-hash
-        GITHUB_REPO: Shwedtreid
-        GITHUB_PAT: $GITHUB_PAT  # Секретная переменная в Codemagic
+    name: Build Android APK
+    max_build_duration: 60
+    instance_type: linux
     scripts:
-      - echo "Переходим в android_app..."
-      - cd android_app
-      - echo "Сборка release APK..."
-      - chmod +x gradlew
-      - ./gradlew assembleRelease
+      - name: Install dependencies
+        script: |
+          sudo apt-get update
+          sudo apt-get install -y unzip wget
+      - name: Build Android APK
+        script: |
+          cd android_app
+          ./gradlew assembleRelease
     artifacts:
       - android_app/app/build/outputs/**/*.apk
