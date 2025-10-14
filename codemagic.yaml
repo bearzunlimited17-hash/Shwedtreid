@@ -5,10 +5,9 @@ workflows:
     max_build_duration: 60
     environment:
       vars:
-        # Не ставим пустые значения! Если нужны секреты, храни их через UI Codemagic
-        # Пример: GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      android: true
-      jdk: openjdk-17
+        # Если нет переменных, просто не указываем vars
+        # Пример для секретного токена:
+        # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     scripts:
       - name: Install dependencies
         script: |
@@ -22,6 +21,5 @@ workflows:
       - app/build/outputs/apk/release/app-release.apk
     publishing:
       email:
-        # Убираем notify_on_build_fail и notify_on_build_success, они не разрешены
         recipients:
           - your-email@example.com
