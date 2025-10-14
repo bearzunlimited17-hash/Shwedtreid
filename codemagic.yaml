@@ -1,16 +1,28 @@
 workflows:
   android-workflow:
-    name: Android Workflow
+    name: Build Android APK
     max_build_duration: 60
+    instance_type: standard
     environment:
       vars:
-        # Здесь можно указать переменные окружения для проекта, например:
-        # BTC_API_KEY: $BTC_API_KEY
+        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+        GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+      flutter: none
+      xcode: none
     scripts:
-      - name: Build Android APK
+      - name: Checkout code
         script: |
-          echo "Сборка APK..."
+          git clone https://github.com/${GITHUB_USERNAME}/Shwedtreid.git .
+      - name: Build APK
+        script: |
           cd android_app
+          chmod +x ./gradlew
           ./gradlew assembleRelease
     artifacts:
       - android_app/app/build/outputs/apk/release/app-release.apk
+    publishing:
+      email:
+        recipients:
+          - your_email@example.com
+        notify_on_build_fail: true
+        notify_on_build_success: true
