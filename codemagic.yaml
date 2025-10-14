@@ -1,11 +1,11 @@
 workflows:
   android-workflow:
     name: Android Workflow
-    instance_type: linux   # только linux доступен на бесплатном плане
+    instance_type: linux  # Бесплатный план
     max_build_duration: 60
     environment:
       vars:
-        GITHUB_TOKEN: $GITHUB_TOKEN  # укажи в настройках Codemagic переменную окружения
+        GITHUB_TOKEN: $GITHUB_TOKEN  # Добавь переменную в настройках Codemagic
     scripts:
       - name: Install dependencies
         script: |
@@ -26,5 +26,3 @@ workflows:
       email:
         recipients:
           - your-email@example.com
-        notify_on_build_fail: true
-        notify_on_build_success: true
