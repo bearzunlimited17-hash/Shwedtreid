@@ -1,22 +1,30 @@
 workflows:
   android-workflow:
     name: Android Workflow
-    instance_type: linux  # обязательное значение из разрешенного списка
+    instance_type: linux   # только linux доступен на бесплатном плане
     max_build_duration: 60
-
     environment:
       vars:
-        GITHUB_TOKEN: $GITHUB_TOKEN
-      flutter: stable
-
+        GITHUB_TOKEN: $GITHUB_TOKEN  # укажи в настройках Codemagic переменную окружения
     scripts:
-      - name: Get dependencies
+      - name: Install dependencies
         script: |
-          flutter pub get
-
+          sudo apt update
+          sudo apt install -y openjdk-21 unzip wget
+          export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+          export PATH=$JAVA_HOME/bin:$PATH
+          wget https://services.gradle.org/distributions/gradle-9.0-bin.zip -O gradle.zip
+          unzip gradle.zip -d $HOME/gradle
+          export PATH=$HOME/gradle/gradle-9.0/bin:$PATH
       - name: Build APK
         script: |
-          flutter build apk --release
-
+          cd android_app
+          ./gradlew assembleRelease || ./gradlew.bat assembleRelease
     artifacts:
-      - build/app/outputs/flutter-apk/app-release.apk
+      - android_app/app/build/outputs/**/*.apk
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com
+        notify_on_build_fail: true
+        notify_on_build_success: true
