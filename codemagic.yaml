@@ -1,20 +1,20 @@
 workflows:
   android-workflow:
     name: Android Workflow
-    instance_type: linux
+    instance_type: linux  # бесплатно доступный инстанс
+    max_build_duration: 60
     environment:
       vars:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # корректный формат переменной
       flutter: stable
     scripts:
       - name: Install dependencies
         script: |
-          echo "Installing backend dependencies..."
-          # pip install -r requirements.txt, если нужно
-      - name: Build Android APK
+          echo "Устанавливаем зависимости"
+          flutter pub get
+      - name: Build APK
         script: |
-          echo "Building APK..."
-          cd android_app
-          ./gradlew assembleRelease
+          echo "Собираем релизный APK"
+          flutter build apk --release
     artifacts:
-      - android_app/app/build/outputs/apk/release/app-release.apk
+      - build/app/outputs/flutter-apk/app-release.apk
