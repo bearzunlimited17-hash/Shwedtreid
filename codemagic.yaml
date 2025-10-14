@@ -1,14 +1,13 @@
 workflows:
   android-workflow:
     name: Android APK Build
-    instance_type: linux        # Linux подходит для Android
+    instance_type: linux
     max_build_duration: 60
     environment:
+      java: openjdk-17
       vars:
-        GITHUB_TOKEN:
-          value: ${{ secrets.GITHUB_TOKEN }}
-          is_secure: true
-      java: openjdk-17           # стабильная версия для Gradle
+        # обычные переменные, например имя приложения
+        APP_NAME: "Shwedtreid"
     scripts:
       - name: Clean project
         script: ./gradlew clean
