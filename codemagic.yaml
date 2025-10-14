@@ -1,18 +1,17 @@
 workflows:
   android-workflow:
     name: Android Workflow
-    instance_type: linux
+    instance_type: linux   # Бесплатный план
     environment:
       vars:
         GITHUB_USERNAME: bearzunlimited17-hash
         GITHUB_REPO: Shwedtreid
-        GITHUB_PAT: $GITHUB_PAT  # Лучше хранить как secure environment variable
+        GITHUB_PAT: $GITHUB_PAT  # Секретная переменная в Codemagic
     scripts:
-      - echo "Сборка проекта..."
+      - echo "Переходим в android_app..."
       - cd android_app
+      - echo "Сборка release APK..."
+      - chmod +x gradlew
       - ./gradlew assembleRelease
     artifacts:
       - android_app/app/build/outputs/**/*.apk
-    publishing:
-      github:
-        enabled: false  # если нужно пушить APK в релиз — можно добавить позже
