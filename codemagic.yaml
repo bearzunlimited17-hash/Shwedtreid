@@ -1,32 +1,16 @@
 workflows:
   android-workflow:
-    name: Build Android APK
+    name: Android Workflow
     max_build_duration: 60
     environment:
-      android: true
-      java: openjdk11
+      vars:
+        # Здесь можно указать переменные окружения для проекта, например:
+        # BTC_API_KEY: $BTC_API_KEY
     scripts:
-      - name: Install backend dependencies
+      - name: Build Android APK
         script: |
-          cd backend
-          python3 -m pip install --upgrade pip
-          pip install -r requirements.txt || echo "No requirements file, skipping"
-
-      - name: Install Android dependencies
-        script: |
-          cd android_app
-          ./gradlew clean
-          ./gradlew dependencies
-
-      - name: Build APK
-        script: |
+          echo "Сборка APK..."
           cd android_app
           ./gradlew assembleRelease
-
     artifacts:
       - android_app/app/build/outputs/apk/release/app-release.apk
-
-    publishing:
-      email:
-        recipients:
-          - your_email@example.com
