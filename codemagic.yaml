@@ -1,14 +1,9 @@
 workflows:
   android-workflow:
     name: Build Android APK
-    max_build_duration: 60
     instance_type: linux
     scripts:
-      - name: Install dependencies
-        script: |
-          sudo apt-get update
-          sudo apt-get install -y unzip wget
-      - name: Build Android APK
+      - name: Build APK
         script: |
           cd android_app
           ./gradlew assembleRelease
